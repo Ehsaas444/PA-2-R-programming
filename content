@@ -60,3 +60,52 @@ cacheSolve <- function(x, ...) {
     ## Return the matrix
     m
 }
+open.account <- function(total) {
+        list(
+                deposit = function(amount) {
+                        if(amount <= 0)
+                                stop("Deposits must be positive!\n")
+                        total <<- total + amount
+                        cat(amount, "deposited.  Your balance is", total, "\n\n")
+                },
+                withdraw = function(amount) {
+                        if(amount > total)
+                                stop("You don't have that much money!\n")
+                        total <<- total - amount
+                        cat(amount, "withdrawn.  Your balance is", total, "\n\n")
+                },
+                balance = function() {
+                        cat("Your balance is", total, "\n\n")
+                }
+        )
+}
+> peter <- open.account(100)
+> mm <- open.account(200)
+> peter$withdraw(30)
+30 withdrawn.  Your balance is 70 
+
+> peter$balance()
+Your balance is 70
+
+> mm$balance()
+Your balance is 200 
+
+> peter$deposit(50)
+50 deposited.  Your balance is 120 
+
+> peter$balance()
+Your balance is 120 
+
+> peter$withdraw(500)
+Error in peter$withdraw(500) : You don't have that much money!
+> mm$balance()
+Your balance is 200
+
+> mm$withdraw(12)
+12 withdrawn.  Your balance is 188 
+
+> mm$balance()
+Your balance is 188 
+
+> peter$balance()
+Your balance is 120
